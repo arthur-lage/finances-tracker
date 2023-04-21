@@ -4,6 +4,7 @@ import cors from "@fastify/cors";
 import fastifyJwt from "@fastify/jwt";
 
 import { authRoutes } from "./routes/auth.route";
+import { transactionRoutes } from "./routes/transaction.route";
 
 declare module "fastify" {
   export interface FastifyInstance {
@@ -37,6 +38,10 @@ server.decorate(
 
 server.register(authRoutes, {
   prefix: "/api/auth",
+});
+
+server.register(transactionRoutes, {
+  prefix: "/api/transactions",
 });
 
 async function bootstrap() {

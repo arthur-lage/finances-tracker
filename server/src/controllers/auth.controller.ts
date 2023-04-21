@@ -2,7 +2,7 @@ import { hash } from "argon2";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 
-import { authService } from "../services/auth.services";
+import { authService } from "../services/auth.service";
 
 export const authController = {
   async auth(req: FastifyRequest, reply: FastifyReply) {

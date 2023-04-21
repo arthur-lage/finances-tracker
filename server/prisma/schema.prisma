@@ -6,16 +6,41 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id        String   @id @default(uuid())
-  name      String
-  email     String   @unique
-  password  String
+  id String @id @default(uuid())
+
+  name     String
+  email    String @unique
+  password String
+
+  transactions Transaction[]
+
   createdAt DateTime @default(now())
 
   @@map("users")
+}
+
+model Transaction {
+  id String @id @default(uuid())
+
+  type  TransactionType
+  name  String
+  value Float
+  date  DateTime
+
+  createdAt DateTime @default(now())
+
+  user   User   @relation(references: [id], fields: [userId])
+  userId String
+
+  @@map("transactions")
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
 }
