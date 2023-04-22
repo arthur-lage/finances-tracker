@@ -1,6 +1,6 @@
 import { verify } from "argon2";
 import { prisma } from "../lib/prisma";
-import { server } from "..";
+import { server } from "../server";
 
 interface IAuthenticateUser {
   id: string;
@@ -54,7 +54,7 @@ export const authService = {
       },
     });
 
-    return server.jwt.sign({ id: user.id });
+    return server.jwt.sign({ id: user.id }, { expiresIn: "2d" });
   },
 
   async login({ email, password }: IAuthLogin): Promise<string> {
@@ -74,6 +74,6 @@ export const authService = {
       throw new Error("Invalid email or password");
     }
 
-    return server.jwt.sign({ id: currentUser.id });
+    return server.jwt.sign({ id: currentUser.id }, { expiresIn: "2d" });
   },
 };
