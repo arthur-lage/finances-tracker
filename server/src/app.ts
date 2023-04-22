@@ -4,6 +4,7 @@ import Fastify, { FastifyReply, FastifyRequest } from "fastify";
 
 import { authRoutes } from "./routes/auth.route";
 import { transactionRoutes } from "./routes/transaction.route";
+import { balanceRoutes } from "./routes/balance.route";
 
 declare module "fastify" {
   export interface FastifyInstance {
@@ -40,6 +41,10 @@ export function build(opts = {}) {
 
   app.register(transactionRoutes, {
     prefix: "/api/transactions",
+  });
+
+  app.register(balanceRoutes, {
+    prefix: "/api/balance",
   });
 
   return app;
