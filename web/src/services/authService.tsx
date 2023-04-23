@@ -13,17 +13,11 @@ interface ILogin {
 }
 
 export const authService = {
-  async authenticate(): Promise<{ user: IUser }> {
+  async authenticate(token: string): Promise<{ user: IUser }> {
     try {
-      const localStorageToken = localStorage.getItem("finances-tracker::token");
-
-      if (!localStorageToken) {
-        throw new Error("User is not logged in");
-      }
-
       const res = await api.get("/auth", {
         headers: {
-          Authorization: localStorageToken,
+          Authorization: `Bearer ${token}`,
         },
       });
 
