@@ -1,6 +1,7 @@
 import { ReactNode, createContext, useEffect, useState } from "react";
 import { IUser } from "../interfaces/IUser";
 import { authService } from "../services/authService";
+import { api } from "../lib/api";
 
 type AuthContextType = {
   currentUser: IUser | null;
@@ -29,10 +30,12 @@ export function AuthProvider({ children }: AuthProviderType) {
       const token = localStorage.getItem("finances-tracker::token");
 
       if (!token) {
-        throw new Error("Invalid user token");
+        return;
       }
 
-      const { user } = await authService.authenticate(token);
+      api.defaults.headers.Authorization = `Bearer ${token}`;
+
+      const { user } = await authService.authenticate();
 
       setCurrentUser(user);
     } catch (err) {

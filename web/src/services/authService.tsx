@@ -13,13 +13,9 @@ interface ILogin {
 }
 
 export const authService = {
-  async authenticate(token: string): Promise<{ user: IUser }> {
+  async authenticate(): Promise<{ user: IUser }> {
     try {
-      const res = await api.get("/auth", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const res = await api.get("/auth");
 
       if (res.status != 200) {
         throw new Error("Could not authenticate user");

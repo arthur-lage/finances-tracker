@@ -16,6 +16,7 @@ Transactions
 
 [] - crud operations
 
+- [] - List by month
 - [] - List all
 - [] - Get by id
 - [] - Create

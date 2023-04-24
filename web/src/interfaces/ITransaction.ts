@@ -4,4 +4,5 @@ export interface ITransaction {
   type: "INCOME" | "EXPENSE";
   value: number;
   date: Date;
+  createdAt: Date;
 }
