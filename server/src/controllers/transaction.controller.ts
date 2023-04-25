@@ -1,6 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { transactionService } from "../services/transaction.service";
 import { z } from "zod";
+import { replaceDateHyphensForSlashes } from "../utils/replaceDateHyphensForSlashes";
 
 export const transactionController = {
   async getAllTransactions(req: FastifyRequest, reply: FastifyReply) {
@@ -64,14 +65,12 @@ export const transactionController = {
       const { id: userId } = await req.jwtVerify<{ id: string; iat: number }>();
       const { name, type, value, date } = result.data;
 
-      console.log(new Date(date).toUTCString());
-
       const transaction = await transactionService.createTransaction({
         userId,
         name,
         type,
         value,
-        date: new Date(date),
+        date: replaceDateHyphensForSlashes(date),
       });
 
       return reply.status(200).send({ transaction });

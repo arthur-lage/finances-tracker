@@ -1,3 +1,5 @@
+import { useBalance } from "../hooks/useBalance";
+import { useTransactions } from "../hooks/useTransactions";
 import { ITransaction } from "../interfaces/ITransaction";
 import { transactionService } from "../services/transactionService";
 import { formatDate } from "../utils/formatDate";
@@ -7,11 +9,22 @@ type TransactionCardType = {
 };
 
 export function TransactionCard({ transaction }: TransactionCardType) {
+  const { transactions, setTransactions } = useTransactions();
+  const { updateBalance } = useBalance();
+
   async function handleDelete() {
     try {
       await transactionService.deleteTransactionById({
         id: transaction.id,
       });
+
+      const newTransactions = transactions.filter(
+        (currentTransaction) => currentTransaction.id != transaction.id
+      );
+
+      setTransactions(newTransactions);
+
+      await updateBalance();
     } catch (err) {
       console.error(err);
     }

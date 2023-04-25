@@ -5,6 +5,13 @@ interface ITransactionGetById {
   id: string;
 }
 
+interface ITransactionCreate {
+  name: string;
+  type: "INCOME" | "EXPENSE";
+  value: number;
+  date: Date;
+}
+
 interface ITransactionDeleteById {
   id: string;
 }
@@ -27,6 +34,28 @@ export const transactionService = {
   }: ITransactionGetById): Promise<{ transaction: ITransaction }> {
     try {
       const res = await api.get("/transactions/" + id);
+
+      return {
+        transaction: res.data.transaction,
+      };
+    } catch (err: any) {
+      throw new Error(err.response.data.message);
+    }
+  },
+
+  async create({
+    name,
+    type,
+    value,
+    date,
+  }: ITransactionCreate): Promise<{ transaction: ITransaction }> {
+    try {
+      const res = await api.post("/transactions", {
+        name,
+        type,
+        value,
+        date,
+      });
 
       return {
         transaction: res.data.transaction,

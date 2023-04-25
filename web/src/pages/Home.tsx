@@ -3,32 +3,24 @@ import { useAuth } from "../hooks/useAuth";
 
 import { Header } from "../components/Header";
 import { TransactionsList } from "../features/Transactions/TransactionsList";
-import { ITransaction } from "../interfaces/ITransaction";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { transactionService } from "../services/transactionService";
-import { balanceService } from "../services/balanceService";
+import { TransactionForm } from "../features/Transactions/TransactionForm";
+import { useTransactions } from "../hooks/useTransactions";
+import { useBalance } from "../hooks/useBalance";
 
 export function Home() {
-  const [transactions, setTransactions] = useState<ITransaction[]>([]);
-  const [balance, setBalance] = useState<null | number>(null);
-
   const { isAuth, currentUser } = useAuth();
+  const { setTransactions } = useTransactions();
+  const { balance, updateBalance } = useBalance();
+
   const loggedIn = isAuth();
 
   useEffect(() => {
     async function fetchTransactions() {
       try {
-        const { transactions } = await transactionService.getAllTransactions();
-        setTransactions(transactions);
-      } catch (err) {
-        console.error(err);
-      }
-    }
-
-    async function fetchBalance() {
-      try {
-        const { balance } = await balanceService.getBalance();
-        setBalance(balance);
+        const res = await transactionService.getAllTransactions();
+        setTransactions(res.transactions);
       } catch (err) {
         console.error(err);
       }
@@ -37,8 +29,9 @@ export function Home() {
     if (!loggedIn) {
       return;
     }
+
     fetchTransactions();
-    fetchBalance();
+    updateBalance();
   }, []);
 
   return (
@@ -54,10 +47,12 @@ export function Home() {
             <h2>Balance: {balance}</h2>
           </section>
 
+          <TransactionForm />
+
           <section>
             <h2>Your transactions (this month)</h2>
 
-            <TransactionsList transactions={transactions} />
+            <TransactionsList />
           </section>
         </div>
       )}
