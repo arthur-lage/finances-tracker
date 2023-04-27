@@ -1,31 +1,29 @@
 import { TransactionCard } from "../../components/TransactionCard";
-import { transactionService } from "../../services/transactionService";
 import { useTransactions } from "../../hooks/useTransactions";
-import { useBalance } from "../../hooks/useBalance";
+import { DeleteAllTransactionsDialog } from "./DeleteAllTransactionsDialog";
+import { useDisclosure } from "@chakra-ui/react";
 
 export function TransactionsList() {
-  const { transactions, setTransactions } = useTransactions();
-  const { updateBalance } = useBalance();
+  const { transactions } = useTransactions();
 
-  async function handleClearTransactions() {
-    if (confirm("Are you sure you want to delete all your transactions?")) {
-      try {
-        await transactionService.deleteAllTransactions();
-        await updateBalance();
-        setTransactions([]);
-      } catch (err) {
-        console.error(err);
-      }
-    }
-  }
+  const deleteAllTransactionsDialogDisclosure = useDisclosure();
 
   return (
     <div>
-      <button onClick={handleClearTransactions}>Clear transactions</button>
+      <button onClick={deleteAllTransactionsDialogDisclosure.onOpen}>
+        Clear transactions
+      </button>
 
-      {transactions.map((transaction) => (
-        <TransactionCard key={transaction.id} transaction={transaction} />
-      ))}
+      <DeleteAllTransactionsDialog
+        isOpen={deleteAllTransactionsDialogDisclosure.isOpen}
+        onClose={deleteAllTransactionsDialogDisclosure.onClose}
+      />
+
+      <section className="transactions-list-scrollbar pr-4 overflow-y-scroll max-h-[25rem] flex flex-col gap-4">
+        {transactions.map((transaction) => (
+          <TransactionCard key={transaction.id} transaction={transaction} />
+        ))}
+      </section>
     </div>
   );
 }

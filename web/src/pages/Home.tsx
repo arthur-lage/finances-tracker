@@ -5,14 +5,18 @@ import { Header } from "../components/Header";
 import { TransactionsList } from "../features/Transactions/TransactionsList";
 import { useEffect } from "react";
 import { transactionService } from "../services/transactionService";
-import { TransactionForm } from "../features/Transactions/TransactionForm";
 import { useTransactions } from "../hooks/useTransactions";
 import { useBalance } from "../hooks/useBalance";
+import { useDisclosure } from "@chakra-ui/react";
+import { CreateTransactionModal } from "../features/Transactions/CreateTransactionModal";
+import { BrazilianReal } from "../utils/formatCurrency";
 
 export function Home() {
   const { isAuth, currentUser } = useAuth();
   const { setTransactions } = useTransactions();
   const { balance, updateBalance } = useBalance();
+
+  const createTransactionModalDisclosure = useDisclosure();
 
   const loggedIn = isAuth();
 
@@ -39,18 +43,39 @@ export function Home() {
       {!loggedIn ? (
         <Navigate to="/login" />
       ) : (
-        <div>
+        <div className="bg-slate-900 min-h-screen text-white">
           <Header />
 
-          <section>
-            <h1>Hello, {currentUser?.name}</h1>
-            <h2>Balance: {balance}</h2>
+          <section className="px-10 font-nunito mt-8 flex items-center justify-between">
+            <div className="flex flex-col gap-4">
+              <h1 className="text-xl">
+                Hello, <span className="font-bold">{currentUser?.name}</span>
+              </h1>
+              <h2 className="text-lg">
+                Balance:{" "}
+                <span className="font-bold">
+                  {BrazilianReal.format(Number(balance))}
+                </span>
+              </h2>
+            </div>
+
+            <button
+              onClick={createTransactionModalDisclosure.onOpen}
+              className="py-2 px-4 bg-violet-500 hover:brightness-125 transition-all duration-150 ease-out text-white text-lg rounded-md"
+            >
+              New Transaction
+            </button>
           </section>
 
-          <TransactionForm />
+          <CreateTransactionModal
+            onClose={createTransactionModalDisclosure.onClose}
+            isOpen={createTransactionModalDisclosure.isOpen}
+          />
 
-          <section>
-            <h2>Your transactions (this month)</h2>
+          <section className="px-10 mt-12 pb-10">
+            <h2 className="mb-4 font-bold text-lg font-nunito">
+              Your transactions (this month)
+            </h2>
 
             <TransactionsList />
           </section>

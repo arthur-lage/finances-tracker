@@ -5,3 +5,15 @@
 .form-label {
   @apply text-white font-medium font-nunito;
 }
+
+.transactions-list-scrollbar::-webkit-scrollbar {
+  @apply w-[10px];
+}
+
+.transactions-list-scrollbar::-webkit-scrollbar-thumb {
+  @apply bg-purple-400 rounded-[20px];
+}
+
+.transactions-list-scrollbar::-webkit-scrollbar-track {
+  @apply bg-purple-700 rounded-[20px];
+}

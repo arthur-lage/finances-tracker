@@ -2,6 +2,7 @@ import { useBalance } from "../hooks/useBalance";
 import { useTransactions } from "../hooks/useTransactions";
 import { ITransaction } from "../interfaces/ITransaction";
 import { transactionService } from "../services/transactionService";
+import { BrazilianReal } from "../utils/formatCurrency";
 import { formatDate } from "../utils/formatDate";
 
 type TransactionCardType = {
@@ -32,13 +33,13 @@ export function TransactionCard({ transaction }: TransactionCardType) {
 
   return (
     <div
-      className={`${
+      className={`text-black p-3 rounded-md ${
         transaction.type === "INCOME" ? "bg-green-300" : "bg-red-300"
       }`}
     >
       <strong>
         {transaction.type === "INCOME" ? "+" : "-"}
-        {transaction.value}
+        {BrazilianReal.format(transaction.value)}
       </strong>
       <p>{transaction.name}</p>
       <p>{formatDate(transaction.date, "D/MM/YYYY")}</p>
