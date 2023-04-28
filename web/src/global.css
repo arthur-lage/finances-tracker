@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .form-label {
-  @apply text-white font-medium font-nunito;
+  @apply text-white font-medium font-jost text-xl;
 }
 
 .transactions-list-scrollbar::-webkit-scrollbar {
@@ -16,4 +16,22 @@
 
 .transactions-list-scrollbar::-webkit-scrollbar-track {
   @apply bg-purple-700 rounded-[20px];
+}
+
+.fade-in {
+  animation: fade-in 1s 1 forwards ease-out;
+}
+
+.app-title {
+  @apply text-[28px] text-center font-bold font-jost text-white;
+}
+
+@keyframes fade-in {
+  from {
+    @apply opacity-0;
+  }
+
+  to {
+    @apply opacity-100;
+  }
 }

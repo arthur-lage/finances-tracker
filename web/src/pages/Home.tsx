@@ -43,7 +43,7 @@ export function Home() {
       {!loggedIn ? (
         <Navigate to="/login" />
       ) : (
-        <div className="bg-slate-900 min-h-screen text-white">
+        <div className="bg-app min-h-screen text-white">
           <Header />
 
           <section className="px-10 font-nunito mt-8 flex items-center justify-between">

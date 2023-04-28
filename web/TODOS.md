@@ -1,9 +1,9 @@
 [] - create styles for:
 
-- [] - login
-- [] - register
+- [x] - login
+- [x] - register
 - [] - home
-- [] - not found
+- [x] - not found
 
 [] - add loading spinner
 

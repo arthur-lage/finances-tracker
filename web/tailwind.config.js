@@ -4,7 +4,13 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        nunito: ["Nunito", "sans-serif"],
+        jost: ["Jost", "sans-serif"],
+      },
+      colors: {
+        app: "#1D1F3E",
+        "input-placeholder": "#ffffff99",
+        "action-primary": "#6147FF",
+        "input-border": "#A68BC9",
       },
     },
   },
