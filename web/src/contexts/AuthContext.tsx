@@ -2,9 +2,12 @@ import { ReactNode, createContext, useEffect, useState } from "react";
 import { IUser } from "../interfaces/IUser";
 import { authService } from "../services/authService";
 import { api } from "../lib/api";
+import { useBalance } from "../hooks/useBalance";
+import { useTransactions } from "../hooks/useTransactions";
 
 type AuthContextType = {
   currentUser: IUser | null;
+  isAuthenticatingUser: boolean;
   isAuth: () => boolean;
   logout: () => void;
   authenticateUser: () => void;
@@ -18,6 +21,9 @@ type AuthProviderType = {
 
 export function AuthProvider({ children }: AuthProviderType) {
   const [currentUser, setCurrentUser] = useState<IUser | null>(null);
+  const [isAuthenticatingUser, setIsAuthenticatingUser] = useState(false);
+  const { setBalance } = useBalance();
+  const { setTransactions } = useTransactions();
 
   function isAuth(): boolean {
     if (!currentUser) return false;
@@ -27,6 +33,7 @@ export function AuthProvider({ children }: AuthProviderType) {
 
   async function authenticateUser() {
     try {
+      setIsAuthenticatingUser(true);
       const token = localStorage.getItem("finances-tracker::token");
 
       if (!token) {
@@ -40,11 +47,15 @@ export function AuthProvider({ children }: AuthProviderType) {
       setCurrentUser(user);
     } catch (err) {
       console.error(err);
+    } finally {
+      setIsAuthenticatingUser(false);
     }
   }
 
   function logout() {
     setCurrentUser(null);
+    setBalance(0);
+    setTransactions([]);
     localStorage.removeItem("finances-tracker::token");
   }
 
@@ -57,6 +68,7 @@ export function AuthProvider({ children }: AuthProviderType) {
     isAuth,
     authenticateUser,
     logout,
+    isAuthenticatingUser,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -5,10 +5,10 @@
 - [] - home
 - [x] - not found
 
-[] - add loading spinner
+[x] - add loading spinner
 
-- [] - login/register buttons
-- [] - while authenticating user
+- [x] - login/register buttons
+- [x] - while authenticating user
 
 ## Transactions
 

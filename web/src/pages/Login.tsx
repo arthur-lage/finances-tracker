@@ -2,6 +2,9 @@ import { useForm } from "react-hook-form";
 import { authService } from "../services/authService";
 import { Link, Navigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import { FormButton } from "../components/FormButton";
+import { useState } from "react";
+import { AuthLoading } from "../components/AuthLoading";
 
 type Inputs = {
   email: string;
@@ -10,6 +13,8 @@ type Inputs = {
 
 export function Login() {
   const { isAuth, authenticateUser } = useAuth();
+  const [isTryingToLogin, setIsTryingToLogin] = useState(false);
+  const { isAuthenticatingUser } = useAuth();
 
   const {
     register,
@@ -19,6 +24,8 @@ export function Login() {
 
   async function handleLogin({ email, password }: Inputs) {
     try {
+      setIsTryingToLogin(true);
+
       const { token } = await authService.login({
         email,
         password,
@@ -29,6 +36,8 @@ export function Login() {
       authenticateUser();
     } catch (err) {
       console.error(err);
+    } finally {
+      setIsTryingToLogin(false);
     }
   }
 
@@ -39,6 +48,8 @@ export function Login() {
       ) : (
         <div className="bg-app">
           <div className="flex flex-col items-center justify-center min-h-screen fade-in">
+            {isAuthenticatingUser ? <AuthLoading /> : ""}
+
             <div className="flex items-center flex-col gap-4">
               <h1 className="app-title">Finances Tracker</h1>
               <h2 className="text-2xl font-medium font-jost text-white">
@@ -80,12 +91,11 @@ export function Login() {
                 />
               </div>
 
-              <button
-                className="w-full border-white mt-[60px] shadow-md text-white tracking-wide bg-action-primary text-xl border-2 hover:scale-[1.025] outline-none font-jost font-bold h-[55px] hover:brightness-110 transition-all duration-150 ease-out rounded-[8px]"
+              <FormButton
+                isLoading={isTryingToLogin}
+                title={"Login"}
                 type="submit"
-              >
-                Login
-              </button>
+              />
             </form>
 
             <Link

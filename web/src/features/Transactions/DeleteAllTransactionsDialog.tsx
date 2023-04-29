@@ -45,19 +45,28 @@ export function DeleteAllTransactionsDialog({
     >
       <AlertDialogOverlay>
         <AlertDialogContent>
-          <AlertDialogHeader fontSize="lg" fontWeight="bold">
+          <AlertDialogHeader className="text-lg font-bold font-jost">
             Delete All Transactions
           </AlertDialogHeader>
 
-          <AlertDialogBody>
+          <AlertDialogBody className="text-lg font-jost">
             Are you sure? You can't undo this action afterwards.
           </AlertDialogBody>
 
-          <AlertDialogFooter>
-            <button ref={cancelRef} onClick={onClose}>
+          <AlertDialogFooter className="flex items-center gap-5">
+            <button
+              className="text-white text-lg border-2 hover:border-red-400 border-red-800 bg-red-700 font-semibold font-jost rounded-md transition-all duration-150 hover:brightness-110 px-4 py-1"
+              ref={cancelRef}
+              onClick={onClose}
+            >
               Cancel
             </button>
-            <button onClick={handleDeleteAll}>Confirm</button>
+            <button
+              className="text-white text-lg border-2 hover:border-indigo-400 border-indigo-800 bg-indigo-700 font-semibold font-jost rounded-md transition-all duration-150 hover:brightness-110 px-4 py-1"
+              onClick={handleDeleteAll}
+            >
+              Confirm
+            </button>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialogOverlay>

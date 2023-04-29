@@ -2,6 +2,9 @@ import { Link, Navigate } from "react-router-dom";
 import { authService } from "../services/authService";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../hooks/useAuth";
+import { FormButton } from "../components/FormButton";
+import { useState } from "react";
+import { AuthLoading } from "../components/AuthLoading";
 
 type Inputs = {
   name: string;
@@ -10,7 +13,8 @@ type Inputs = {
 };
 
 export function Register() {
-  const { isAuth, authenticateUser } = useAuth();
+  const { isAuth, authenticateUser, isAuthenticatingUser } = useAuth();
+  const [isTryingToRegister, setIsTryingToRegister] = useState(false);
 
   const {
     register,
@@ -20,6 +24,8 @@ export function Register() {
 
   async function handleRegister({ name, email, password }: Inputs) {
     try {
+      setIsTryingToRegister(true);
+
       const { token } = await authService.register({
         name,
         email,
@@ -31,6 +37,8 @@ export function Register() {
       authenticateUser();
     } catch (err) {
       console.error(err);
+    } finally {
+      setIsTryingToRegister(false);
     }
   }
 
@@ -41,6 +49,8 @@ export function Register() {
       ) : (
         <div className="bg-app">
           <div className="min-h-screen fade-in flex flex-col items-center justify-center">
+            {isAuthenticatingUser ? <AuthLoading /> : ""}
+
             <div className="flex items-center flex-col gap-4">
               <h1 className="app-title">Finances Tracker</h1>
               <h2 className="text-2xl font-medium font-jost text-white">
@@ -95,12 +105,11 @@ export function Register() {
                 />
               </div>
 
-              <button
-                className="w-full border-white mt-[60px] shadow-md text-white tracking-wide bg-action-primary text-xl border-2 hover:scale-[1.025] outline-none font-jost font-bold h-[55px] hover:brightness-110 transition-all duration-150 ease-out rounded-[8px]"
+              <FormButton
+                isLoading={isTryingToRegister}
                 type="submit"
-              >
-                Register
-              </button>
+                title="Register"
+              />
             </form>
 
             <Link

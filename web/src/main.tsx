@@ -14,13 +14,13 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <BrowserRouter>
       <ChakraProvider>
-        <AuthProvider>
-          <TransactionsProvider>
-            <BalanceProvider>
+        <TransactionsProvider>
+          <BalanceProvider>
+            <AuthProvider>
               <App />
-            </BalanceProvider>
-          </TransactionsProvider>
-        </AuthProvider>
+            </AuthProvider>
+          </BalanceProvider>
+        </TransactionsProvider>
       </ChakraProvider>
     </BrowserRouter>
   </React.StrictMode>

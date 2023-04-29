@@ -1,3 +1,4 @@
+import { Trash } from "@phosphor-icons/react";
 import { TransactionCard } from "../../components/TransactionCard";
 import { useTransactions } from "../../hooks/useTransactions";
 import { DeleteAllTransactionsDialog } from "./DeleteAllTransactionsDialog";
@@ -10,9 +11,19 @@ export function TransactionsList() {
 
   return (
     <div>
-      <button onClick={deleteAllTransactionsDialogDisclosure.onOpen}>
-        Clear transactions
-      </button>
+      <div className="flex flex-col mb-8">
+        <h2 className="mb-4 text-center font-bold text-lg font-jost">
+          Your transactions (this month)
+        </h2>
+
+        <button
+          className="w-full justify-center flex items-center gap-2 text-white hover:brightness-110 bg-red-600 font-semibold font-jost text-lg px-4 py-2 rounded-md shadow-md"
+          onClick={deleteAllTransactionsDialogDisclosure.onOpen}
+        >
+          <Trash weight="fill" />
+          <span>Clear transactions</span>
+        </button>
+      </div>
 
       <DeleteAllTransactionsDialog
         isOpen={deleteAllTransactionsDialogDisclosure.isOpen}

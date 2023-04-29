@@ -8,6 +8,7 @@ export default {
       },
       colors: {
         app: "#1D1F3E",
+        header: "#121426",
         "input-placeholder": "#ffffff99",
         "action-primary": "#6147FF",
         "input-border": "#A68BC9",

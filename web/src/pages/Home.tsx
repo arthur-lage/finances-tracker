@@ -10,9 +10,11 @@ import { useBalance } from "../hooks/useBalance";
 import { useDisclosure } from "@chakra-ui/react";
 import { CreateTransactionModal } from "../features/Transactions/CreateTransactionModal";
 import { BrazilianReal } from "../utils/formatCurrency";
+import { AuthLoading } from "../components/AuthLoading";
+import { CurrencyDollar } from "@phosphor-icons/react";
 
 export function Home() {
-  const { isAuth, currentUser } = useAuth();
+  const { isAuth, currentUser, isAuthenticatingUser } = useAuth();
   const { setTransactions } = useTransactions();
   const { balance, updateBalance } = useBalance();
 
@@ -46,8 +48,8 @@ export function Home() {
         <div className="bg-app min-h-screen text-white">
           <Header />
 
-          <section className="px-10 font-nunito mt-8 flex items-center justify-between">
-            <div className="flex flex-col gap-4">
+          <section className="px-6 w-full font-jost mt-8 flex flex-col gap-6">
+            <div className="flex flex-col gap-1">
               <h1 className="text-xl">
                 Hello, <span className="font-bold">{currentUser?.name}</span>
               </h1>
@@ -61,9 +63,10 @@ export function Home() {
 
             <button
               onClick={createTransactionModalDisclosure.onOpen}
-              className="py-2 px-4 bg-violet-500 hover:brightness-125 transition-all duration-150 ease-out text-white text-lg rounded-md"
+              className="w-full justify-center flex items-center gap-2 py-2 px-4 bg-violet-500 hover:brightness-125 transition-all duration-150 ease-out text-white font-jost font-semibold text-lg rounded-md"
             >
-              New Transaction
+              <CurrencyDollar weight="bold" size={22} />
+              <span>New Transaction</span>
             </button>
           </section>
 
@@ -72,11 +75,7 @@ export function Home() {
             isOpen={createTransactionModalDisclosure.isOpen}
           />
 
-          <section className="px-10 mt-12 pb-10">
-            <h2 className="mb-4 font-bold text-lg font-nunito">
-              Your transactions (this month)
-            </h2>
-
+          <section className="px-6 mt-12 pb-10">
             <TransactionsList />
           </section>
         </div>
