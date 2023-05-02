@@ -44,7 +44,7 @@ export function DeleteAllTransactionsDialog({
       onClose={onClose}
     >
       <AlertDialogOverlay>
-        <AlertDialogContent>
+        <AlertDialogContent maxWidth={[300, 450, 650, 850]}>
           <AlertDialogHeader className="text-lg font-bold font-jost">
             Delete All Transactions
           </AlertDialogHeader>

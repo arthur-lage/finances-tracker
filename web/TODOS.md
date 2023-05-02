@@ -2,7 +2,8 @@
 
 - [x] - login
 - [x] - register
-- [] - home
+- [x] - home
+- [] - transaction component
 - [x] - not found
 
 [x] - add loading spinner
@@ -16,7 +17,8 @@ Transactions
 
 [] - crud operations
 
-- [] - List by month
+- [] - sort by (last added, all, by month, by date)
+- [] - filter (all, expenses only, incomes only)
 - [x] - List all
 - [] - Get by id
 - [x] - Create
