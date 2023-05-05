@@ -10,12 +10,11 @@ import { useBalance } from "../hooks/useBalance";
 import { useDisclosure } from "@chakra-ui/react";
 import { CreateTransactionModal } from "../features/Transactions/CreateTransactionModal";
 import { BrazilianReal } from "../utils/formatCurrency";
-import { AuthLoading } from "../components/AuthLoading";
 import { CurrencyDollar } from "@phosphor-icons/react";
 
 export function Home() {
-  const { isAuth, currentUser, isAuthenticatingUser } = useAuth();
-  const { setTransactions } = useTransactions();
+  const { isAuth, currentUser } = useAuth();
+  const { transactions, setTransactions } = useTransactions();
   const { balance, updateBalance } = useBalance();
 
   const createTransactionModalDisclosure = useDisclosure();
@@ -51,7 +50,8 @@ export function Home() {
           <section className="px-6 w-full font-jost mt-8 flex flex-col gap-6">
             <div className="flex flex-col gap-1">
               <h1 className="text-xl">
-                Hello, <span className="font-bold">{currentUser?.name}</span>
+                Hello,{" "}
+                <span className="font-semibold">{currentUser?.name}</span>
               </h1>
               <h2 className="text-lg">
                 Balance:{" "}
@@ -75,9 +75,21 @@ export function Home() {
             isOpen={createTransactionModalDisclosure.isOpen}
           />
 
-          <section className="px-6 mt-12 pb-10">
-            <TransactionsList />
-          </section>
+          <div className="w-full my-6 px-6">
+            <div className="w-full h-[1px] bg-gray-600"></div>
+          </div>
+
+          {transactions.length > 0 ? (
+            <section className="px-6 mt-5 pb-10">
+              <TransactionsList />
+            </section>
+          ) : (
+            <div className="px-6 mt-5">
+              <h2 className="font-jost font-bold text-lg text-center px-4">
+                You haven't added any transactions yet
+              </h2>
+            </div>
+          )}
         </div>
       )}
     </>
