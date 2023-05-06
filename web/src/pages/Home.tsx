@@ -4,7 +4,6 @@ import { useAuth } from "../hooks/useAuth";
 import { Header } from "../components/Header";
 import { TransactionsList } from "../features/Transactions/TransactionsList";
 import { useEffect } from "react";
-import { transactionService } from "../services/transactionService";
 import { useTransactions } from "../hooks/useTransactions";
 import { useBalance } from "../hooks/useBalance";
 import { useDisclosure } from "@chakra-ui/react";
@@ -14,7 +13,7 @@ import { CurrencyDollar } from "@phosphor-icons/react";
 
 export function Home() {
   const { isAuth, currentUser } = useAuth();
-  const { transactions, setTransactions } = useTransactions();
+  const { transactions, updateTransactions } = useTransactions();
   const { balance, updateBalance } = useBalance();
 
   const createTransactionModalDisclosure = useDisclosure();
@@ -22,20 +21,11 @@ export function Home() {
   const loggedIn = isAuth();
 
   useEffect(() => {
-    async function fetchTransactions() {
-      try {
-        const res = await transactionService.getAllTransactions();
-        setTransactions(res.transactions);
-      } catch (err) {
-        console.error(err);
-      }
-    }
-
     if (!loggedIn) {
       return;
     }
 
-    fetchTransactions();
+    updateTransactions();
     updateBalance();
   }, []);
 
