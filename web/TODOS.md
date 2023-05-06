@@ -11,6 +11,9 @@
 - [x] - login/register buttons
 - [x] - while authenticating user
 
+[] - Create private route component
+[] - Add tailwind breakpoints
+
 ## Transactions
 
 Transactions
