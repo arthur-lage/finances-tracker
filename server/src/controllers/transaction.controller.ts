@@ -82,10 +82,10 @@ export const transactionController = {
   async updateTransaction(req: FastifyRequest, reply: FastifyReply) {
     try {
       const updateTransactionBody = z.object({
-        name: z.string().optional(),
-        type: z.enum(["INCOME", "EXPENSE"]).optional(),
-        value: z.number().optional(),
-        date: z.date().optional(),
+        name: z.string(),
+        type: z.enum(["INCOME", "EXPENSE"]),
+        value: z.number(),
+        date: z.string(),
       });
 
       const updateTransactionParams = z.object({
@@ -103,21 +103,23 @@ export const transactionController = {
         throw new Error(resultBody.error.errors[0].message);
       }
 
+      console.log("\n\n\n\n skibiridopdopdop \n\n\n\n");
+
       // @ts-ignore
       const { id: userId } = await req.jwtVerify<{ id: string; iat: number }>();
       const { transactionId } = resultParams.data;
       const { name, type, value, date } = resultBody.data;
 
-      const transaction = await transactionService.updateTransaction({
+      await transactionService.updateTransaction({
         userId,
         transactionId,
         name,
         type,
         value,
-        date,
+        date: replaceDateHyphensForSlashes(date),
       });
 
-      return reply.status(200).send({ transaction });
+      return reply.status(200).send();
     } catch (err: any) {
       return reply.status(400).send({ message: err.message });
     }

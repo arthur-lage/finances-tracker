@@ -30,10 +30,10 @@ interface ITransactionCreate {
 interface ITransactionUpdate {
   userId: string;
   transactionId: string;
-  type?: "INCOME" | "EXPENSE";
-  name?: string;
-  value?: number;
-  date?: Date;
+  type: "INCOME" | "EXPENSE";
+  name: string;
+  value: number;
+  date: Date;
 }
 
 interface ITransactionDeleteAll {
@@ -131,11 +131,11 @@ export const transactionService = {
   async updateTransaction({
     userId,
     transactionId,
-    type,
     name,
+    type,
     value,
     date,
-  }: ITransactionUpdate): Promise<ITransactionResponse> {
+  }: ITransactionUpdate): Promise<void> {
     const userExists = await prisma.user.findFirst({
       where: {
         id: userId,
@@ -146,7 +146,7 @@ export const transactionService = {
       throw new Error("Could not find user");
     }
 
-    const transaction = await prisma.transaction.update({
+    await prisma.transaction.update({
       where: {
         id: transactionId,
       },
@@ -157,8 +157,6 @@ export const transactionService = {
         date: date || undefined,
       },
     });
-
-    return transactionMapper.toDTO(transaction);
   },
 
   async deleteAllTransactions({
