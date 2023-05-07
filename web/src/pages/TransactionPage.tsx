@@ -8,9 +8,11 @@ import { Header } from "../components/Header";
 import { BrazilianReal } from "../utils/formatCurrency";
 import { useDisclosure } from "@chakra-ui/react";
 import { DeleteByIdDialog } from "../features/Transactions/DeleteByIdDialog";
+import { UpdateTransactionModal } from "../features/Transactions/UpdateTransactionModal";
 
 export function TransactionPage() {
   const deleteByIdDialogClosure = useDisclosure();
+  const updateTransactionModalDisclosure = useDisclosure();
 
   const [transaction, setTransaction] = useState<ITransaction | null>(null);
   const { transactionId } = useParams();
@@ -67,6 +69,12 @@ export function TransactionPage() {
             </p>
           </div>
 
+          <UpdateTransactionModal
+            transactionId={String(transactionId)}
+            isOpen={updateTransactionModalDisclosure.isOpen}
+            onClose={updateTransactionModalDisclosure.onClose}
+          />
+
           <DeleteByIdDialog
             transactionId={String(transactionId)}
             isOpen={deleteByIdDialogClosure.isOpen}
@@ -74,7 +82,10 @@ export function TransactionPage() {
           />
 
           <div className="flex flex-col gap-4 w-full items-center">
-            <button className="w-full shadow-md rounded-md py-2 text-white bg-action-primary font-jost font-semibold">
+            <button
+              onClick={updateTransactionModalDisclosure.onOpen}
+              className="w-full shadow-md rounded-md py-2 text-white bg-action-primary font-jost font-semibold"
+            >
               Edit
             </button>
             <button
