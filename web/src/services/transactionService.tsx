@@ -5,6 +5,13 @@ interface ITransactionGetById {
   id: string;
 }
 
+interface ITransactionUpdate {
+  name: string;
+  type: "INCOME" | "EXPENSE";
+  value: number;
+  date: Date;
+}
+
 interface ITransactionCreate {
   name: string;
   type: "INCOME" | "EXPENSE";
@@ -60,6 +67,17 @@ export const transactionService = {
       return {
         transaction: res.data.transaction,
       };
+    } catch (err: any) {
+      throw new Error(err.response.data.message);
+    }
+  },
+
+  async update(
+    transactionId: string,
+    transactionData: ITransactionUpdate
+  ): Promise<void> {
+    try {
+      await api.patch("/transactions/" + transactionId, transactionData);
     } catch (err: any) {
       throw new Error(err.response.data.message);
     }
